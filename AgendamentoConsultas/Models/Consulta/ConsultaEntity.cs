@@ -8,15 +8,16 @@ namespace AgendamentoConsultas.Models.Consulta
 {
     public class ConsultaEntity
     {
-        public string id { get; set; }
+        public string Id { get; set; }
 
-        public DateTime data_consulta { get; set; }
+        public DateTime DataConsulta { get; set; }
 
-        public string nomeProcedimento{ get; set; }
+        public string NomeProcedimento{ get; set; }
 
-        public DateTime horarioConsulta { get; set; }
+        public DateTime HorarioConsulta { get; set; }
 
-        public AnameneseEntity anamenese { get; set; }
+        public AnameneseEntity Anamenese { get; set; }
+        public int AnameneseId { get; set; }
 
 
 

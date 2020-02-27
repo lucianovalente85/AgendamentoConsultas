@@ -7,7 +7,7 @@ namespace AgendamentoConsultas.Models.PlanoSaude
 {
     public class PlanoSaudeEntity
     {
-        public string planoSaude { get; set; }
+        public string PlanoSaude { get; set; }
 
     }
 }

@@ -7,6 +7,6 @@ namespace AgendamentoConsultas.Models.Anamenese
 {
     public class PartedoCorpoEntity
     {
-        public string partesdoCorpo { get; set; }
+        public string PartesdoCorpo { get; set; }
     }
 }

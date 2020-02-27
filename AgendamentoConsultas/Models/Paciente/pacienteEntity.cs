@@ -13,12 +13,16 @@ namespace AgendamentoConsultas.Models.Paciente
         public int Codigo { get; set; }
         public int Cpf { get; set; }
         public DateTime DataNascimento{ get; set; }
+                
+        public List<PlanoSaudeEntity> plano = new List<PlanoSaudeEntity>()
+        {
+             new PlanoSaudeEntity{planoSaude="UNIMED"},
+             new PlanoSaudeEntity{planoSaude="AMIL"},
+             new PlanoSaudeEntity{planoSaude="SAUDE SERVIDOR"},
+             new PlanoSaudeEntity{planoSaude="BRADESCO"},
+             new PlanoSaudeEntity{planoSaude="OUTROS"}
+        };
 
-        //DateTime myDateTime = DateTime.Now;
-        //string sqlFormattedDate = myDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-
-         public PlanoSaudeEntity planoSaude { get; set; }
-
-         public ConsultaEntity consulta { get; set; }
+        public ConsultaEntity consulta { get; set; }
     }
 }

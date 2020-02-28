@@ -21,7 +21,7 @@ namespace AgendamentoConsultas
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 
         {
-            optionsBuilder.UseMySql("server=localhost;database=AgentamentoConsultas;user=root;password=");
+            optionsBuilder.UseMySql("server=localhost;database=AgentamentoConsultas;user=root;password=123456");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -14,9 +14,9 @@ namespace AgendamentoConsultas.Controllers
     {
         private readonly DataBase _context;
 
-        public ConsultaEntitiesController(DataBase context)
+        public ConsultaEntitiesController()
         {
-            _context = context;
+            _context = new DataBase();
         }
 
         // GET: ConsultaEntities

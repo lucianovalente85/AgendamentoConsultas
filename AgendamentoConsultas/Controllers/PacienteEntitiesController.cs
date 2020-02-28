@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AgendamentoConsultas;
 using AgendamentoConsultas.Models.Paciente;
 
 namespace AgendamentoConsultas.Controllers
@@ -20,9 +16,22 @@ namespace AgendamentoConsultas.Controllers
         }
 
         // GET: PacienteEntities
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Pacientes.ToListAsync());
+            return View();
+        }
+
+        public async Task<PartialViewResult> Listar(PacienteEntity paciente, int pagina = 1, int registros = 5)
+        {
+            var query = _context.Pacientes.AsQueryable();
+            if (paciente.Codigo != 0)
+                query = query.Where(p => p.Codigo.Equals(paciente.Codigo));
+
+            if (paciente.Cpf != 0)
+                query = query.Where(p => p.Cpf.Equals(paciente.Cpf));
+
+            query = query.OrderBy(c => c.Id).Skip((pagina - 1) * registros).Take(registros);
+            return PartialView("_Listar", await query.ToListAsync());
         }
 
         // GET: PacienteEntities/Details/5

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace AgendamentoConsultas.Models.Anamenese
 {
-    public class AnameneseEntity
+    public class AnamneseEntity
     {
         public int Id { get; set; }
         public string Sintomas { get; set; }

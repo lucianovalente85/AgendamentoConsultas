@@ -16,8 +16,8 @@ namespace AgendamentoConsultas.Models.Consulta
 
         public DateTime HorarioConsulta { get; set; }
 
-        public AnameneseEntity Anamenese { get; set; }
-        public int AnameneseId { get; set; }
+        public AnamneseEntity Anamnese { get; set; }
+        public int AnamneseId { get; set; }
 
 
 

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AgendamentoConsultas.Models.Consulta.ConsultaEntity>
+﻿
 
 @{
     ViewData["Title"] = "Index";
@@ -7,47 +7,58 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a href="@Url.Action("Create")" class="btn btn-success">
+        <span class="glyphicon gliphicon-plus"></span>
+        Nova Consulta
+    </a>
+    
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.DataConsulta)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NomeProcedimento)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HorarioConsulta)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Anamenese)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataConsulta)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NomeProcedimento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HorarioConsulta)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Anamenese.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+
+<form class="form-inline">
+    <div class="form-group">
+        <label class="sr-only">Data da Consulta</label>
+        <input type="text" class="form-control" name="DataConsulta" placeholder="Data da Consulta">
+    </div>
+    <button type="button" id="btnPesquisar" class="btn btn-primary">Pesquisar</button>
+
+    <input type="hidden" name="pagina" value="1" />
+    <input type="hidden" name="registros" value="5" />
+</form>
+
+
+<div id="listagemConsulta"></div>
+
+@section scripts{ 
+    <script type="text/javascript">
+        $(document).ready(configurarControles);
+
+        function configurarControles() {
+
+            $("#btnPesquisar").click(listarConsultas);
+
+            listarConsultas();            
+        }
+
+        
+
+        function paginar(valor) {
+
+            var elementoPagina = $("input[name='pagina']");
+
+            var paginaAtual = parseInt(elementoPagina.val());
+
+            elementoPagina.val(paginaAtual + valor);
+
+            listarConsultas();
+
+            
+        }
+
+        function listarConsultas() {
+
+            $("#listagemConsulta").load("@Url.Action("Listar")", $("form").serialize());
+        }
+
+    </script>
 }
-    </tbody>
-</table>
+

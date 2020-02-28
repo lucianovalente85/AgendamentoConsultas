@@ -1,0 +1,56 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model IEnumerable<AgendamentoConsultas.Models.Consulta.ConsultaEntity>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DataConsulta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NomeProcedimento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HorarioConsulta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Anamnese)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataConsulta)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NomeProcedimento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HorarioConsulta)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Anamnese.Id)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<nav>
+    <ul class="pager">
+        <li><a href="#" onclick="paginar(-1)">Anterior</a></li>
+        <li><a href="#" onclick="paginar(1)">Próxima</a></li>
+    </ul>
+</nav>

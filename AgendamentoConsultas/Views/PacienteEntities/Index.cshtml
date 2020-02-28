@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AgendamentoConsultas.Models.Paciente.PacienteEntity>
+﻿
 
 @{
     ViewData["Title"] = "Index";
@@ -7,47 +7,60 @@
 <h1>Index</h1>
 
 <p>
+    <a href="@Url.Action("Create")" class="btn btn-success">
+        <span class="glyphicon glyphicon-plus"></span>
+        Novo Paciente
+    </a>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Codigo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cpf)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DataNascimento)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ConsultaId)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Codigo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cpf)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataNascimento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ConsultaId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+
+<form class="form-inline">
+    <div class="form-group">
+        <label class="sr-only">Codigo</label>
+        <input type="text" class="form-control" name="Codigo" placeholder="Codigo">
+    </div>
+    <div class="form-group">
+        <label class="sr-only">CPF</label>
+        <input type="text" class="form-control" name="Cpf" placeholder="Cpf">
+    </div>
+    <button type="button" id="btnListar" class="btn btn-primary">Listar</button>
+
+    <input type="hidden" name="pagina" value="1" />
+    <input type="hidden" name="registros" value="5" />
+</form>
+
+<div id="listagemPaciente"></div>
+
+@section scripts{ 
+    <script type="text/javascript">
+        $(document).ready(configurarControles);
+
+        function configurarControles() {
+
+            $("#btnListar").click(listarPacientes);
+
+            listarPacientes();
+        }
+
+        function paginar(valor)
+        {
+            var elementoPagina = $("input[name='pagina']");
+
+            var paginaAtual = parseInt(elementoPagina.val());
+
+            elementoPagina.val();
+
+            listarPacientes(paginaAtual + valor);
+
+           
+        }
+
+        function listarPacientes()
+        {
+            $("#listagemPaciente").load("@Url.Action("Listar")", $("form").serialize());
+        }
+
+    </script>
+    
 }
-    </tbody>
-</table>
+

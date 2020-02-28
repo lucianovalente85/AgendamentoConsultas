@@ -20,11 +20,28 @@ namespace AgendamentoConsultas.Controllers
         }
 
         // GET: ConsultaEntities
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var dataBase = _context.Consultas.Include(c => c.Anamenese);
-            return View(await dataBase.ToListAsync());
+
+            return View();
         }
+
+        public async Task<PartialViewResult> Listar(ConsultaEntity consultaEntity, int pagina = 1, int registros = 5)
+        {
+            var query = _context.Consultas.AsQueryable();
+                       
+            var dataHoje = DateTime.Today;
+            var dataAmanha = DateTime.Today.AddDays(1);
+
+
+            query = query.Where(e => e.DataConsulta >= dataHoje && e.DataConsulta < dataAmanha);
+              
+
+            query = query.OrderBy(c => c.DataConsulta).Skip((pagina - 1) * registros).Take(registros);
+
+            return PartialView("_Listar", await query.ToListAsync());
+        }
+
 
         // GET: ConsultaEntities/Details/5
         public async Task<IActionResult> Details(string id)
@@ -35,7 +52,7 @@ namespace AgendamentoConsultas.Controllers
             }
 
             var consultaEntity = await _context.Consultas
-                .Include(c => c.Anamenese)
+                .Include(c => c.Anamnese)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (consultaEntity == null)
             {
@@ -48,7 +65,7 @@ namespace AgendamentoConsultas.Controllers
         // GET: ConsultaEntities/Create
         public IActionResult Create()
         {
-            ViewData["AnameneseId"] = new SelectList(_context.Anameneses, "Id", "Id");
+            ViewData["AnamneseId"] = new SelectList(_context.Anamneses, "Id", "Id");
             return View();
         }
 
@@ -57,7 +74,7 @@ namespace AgendamentoConsultas.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DataConsulta,NomeProcedimento,HorarioConsulta,AnameneseId")] ConsultaEntity consultaEntity)
+        public async Task<IActionResult> Create([Bind("Id,DataConsulta,NomeProcedimento,HorarioConsulta,AnamneseId")] ConsultaEntity consultaEntity)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +82,7 @@ namespace AgendamentoConsultas.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AnameneseId"] = new SelectList(_context.Anameneses, "Id", "Id", consultaEntity.AnameneseId);
+            ViewData["AnamneseId"] = new SelectList(_context.Anamneses, "Id", "Id", consultaEntity.AnamneseId);
             return View(consultaEntity);
         }
 
@@ -82,7 +99,7 @@ namespace AgendamentoConsultas.Controllers
             {
                 return NotFound();
             }
-            ViewData["AnameneseId"] = new SelectList(_context.Anameneses, "Id", "Id", consultaEntity.AnameneseId);
+            ViewData["AnamneseId"] = new SelectList(_context.Anamneses, "Id", "Id", consultaEntity.AnamneseId);
             return View(consultaEntity);
         }
 
@@ -91,7 +108,7 @@ namespace AgendamentoConsultas.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,DataConsulta,NomeProcedimento,HorarioConsulta,AnameneseId")] ConsultaEntity consultaEntity)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,DataConsulta,NomeProcedimento,HorarioConsulta,AnamneseId")] ConsultaEntity consultaEntity)
         {
             if (id != consultaEntity.Id)
             {
@@ -118,7 +135,7 @@ namespace AgendamentoConsultas.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AnameneseId"] = new SelectList(_context.Anameneses, "Id", "Id", consultaEntity.AnameneseId);
+            ViewData["AnamneseId"] = new SelectList(_context.Anamneses, "Id", "Id", consultaEntity.AnamneseId);
             return View(consultaEntity);
         }
 
@@ -131,7 +148,7 @@ namespace AgendamentoConsultas.Controllers
             }
 
             var consultaEntity = await _context.Consultas
-                .Include(c => c.Anamenese)
+                .Include(c => c.Anamnese)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (consultaEntity == null)
             {

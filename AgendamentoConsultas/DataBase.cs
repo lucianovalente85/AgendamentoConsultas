@@ -15,13 +15,13 @@ namespace AgendamentoConsultas
          
         public DbSet<PacienteEntity> Pacientes { get; set; }
         public DbSet<ConsultaEntity> Consultas { get; set; }
-        public DbSet<AnameneseEntity> Anameneses { get; set; }
+        public DbSet<AnamneseEntity> Anamneses { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 
         {
-            optionsBuilder.UseMySql("server=localhost;database=AgentamentoConsultas;user=root;password=123456");
+            optionsBuilder.UseMySql("server=localhost;database=agentamentoconsultas;user=root;password=123456");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

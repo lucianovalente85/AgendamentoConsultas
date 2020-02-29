@@ -1,4 +1,4 @@
-﻿@model AgendamentoConsultas.Models.Consulta.ConsultaEntity
+﻿@model AgendamentoConsultas.Models.Consultas.ConsultaEntity
 
 @{
     ViewData["Title"] = "Edit";
@@ -19,19 +19,14 @@
                 <span asp-validation-for="DataConsulta" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="NomeProcedimento" class="control-label"></label>
-                <input asp-for="NomeProcedimento" class="form-control" />
-                <span asp-validation-for="NomeProcedimento" class="text-danger"></span>
+                <label asp-for="NomeProcedimeneto" class="control-label"></label>
+                <input asp-for="NomeProcedimeneto" class="form-control" />
+                <span asp-validation-for="NomeProcedimeneto" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="HorarioConsulta" class="control-label"></label>
                 <input asp-for="HorarioConsulta" class="form-control" />
                 <span asp-validation-for="HorarioConsulta" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AnamneseId" class="control-label"></label>
-                <select asp-for="AnamneseId" class="form-control" asp-items="ViewBag.AnamneseId"></select>
-                <span asp-validation-for="AnamneseId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

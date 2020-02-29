@@ -3,19 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AgendamentoConsultas.Models.Anamenese
+namespace AgendamentoConsultas.Models.Anamnese
 {
     public class AnamneseEntity
     {
         public int Id { get; set; }
         public string Sintomas { get; set; }
         public string DoencasPreExistentes { get; set; }
-        public List<PartedoCorpoEntity> PartesdoCorpo = new List<PartedoCorpoEntity>()
-        {
-            new PartedoCorpoEntity{PartesdoCorpo="cabeça"},
-            new PartedoCorpoEntity{PartesdoCorpo="abdomem"},
-            new PartedoCorpoEntity{PartesdoCorpo="membros superiores"},
-            new PartedoCorpoEntity{PartesdoCorpo="membros inferiores"},
-        };
+        public int ParteDoCorpoId { get; set; }
+        public virtual ParteDoCorpoEntity ParteDoCorpo { get; set; }
     }
 }

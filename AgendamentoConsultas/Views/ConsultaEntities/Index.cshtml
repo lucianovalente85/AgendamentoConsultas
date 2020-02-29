@@ -1,17 +1,10 @@
 ﻿
-
-@{
-    ViewData["Title"] = "Index";
-}
-
-<h1>Index</h1>
-
 <p>
     <a href="@Url.Action("Create")" class="btn btn-success">
         <span class="glyphicon gliphicon-plus"></span>
         Nova Consulta
     </a>
-    
+
 </p>
 
 <form class="form-inline">
@@ -28,7 +21,7 @@
 
 <div id="listagemConsulta"></div>
 
-@section scripts{ 
+@section scripts{
     <script type="text/javascript">
         $(document).ready(configurarControles);
 
@@ -36,10 +29,10 @@
 
             $("#btnPesquisar").click(listarConsultas);
 
-            listarConsultas();            
+            listarConsultas();
         }
 
-        
+
 
         function paginar(valor) {
 
@@ -51,7 +44,7 @@
 
             listarConsultas();
 
-            
+
         }
 
         function listarConsultas() {
@@ -61,4 +54,3 @@
 
     </script>
 }
-

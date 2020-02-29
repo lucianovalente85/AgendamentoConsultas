@@ -6,43 +6,28 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AgendamentoConsultas;
-using AgendamentoConsultas.Models.Consultas;
+using AgendamentoConsultas.Models.Anamnese;
 
 namespace AgendamentoConsultas.Controllers
 {
-    public class ConsultaEntitiesController : Controller
+    public class AnamneseEntitiesController : Controller
     {
         private readonly DataBase _context;
 
-        public ConsultaEntitiesController()
+        public AnamneseEntitiesController()
         {
             _context = new DataBase();
         }
 
-        // GET: ConsultaEntities
-        public IActionResult Index()
+        // GET: AnamneseEntities
+        public async Task<IActionResult> Index()
         {
-            return View();
-        }
-
-        public async Task<PartialViewResult> Listar(ConsultaEntity consultaEntity, int pagina = 1, int registros = 5)
-        {
-            var query = _context.Consultas.AsQueryable();
-
-            var dataHoje = DateTime.Today;
-            var dataAmanha = DateTime.Today.AddDays(1);
-
-
-            query = query.Where(e => e.DataConsulta >= dataHoje && e.DataConsulta < dataAmanha);
-
-
-            query = query.OrderBy(c => c.DataConsulta).Skip((pagina - 1) * registros).Take(registros);
-
-            return PartialView("_Listar", await query.ToListAsync());
+            var dataBase = _context.Anamneses.Include(a => a.ParteDoCorpo);
+            return View(await dataBase.ToListAsync());
         }
 
 
-        // GET: ConsultaEntities/Details/5
+        // GET: AnamneseEntities/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -50,39 +35,42 @@ namespace AgendamentoConsultas.Controllers
                 return NotFound();
             }
 
-            var consultaEntity = await _context.Consultas
+            var anamneseEntity = await _context.Anamneses
+                .Include(a => a.ParteDoCorpo)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (consultaEntity == null)
+            if (anamneseEntity == null)
             {
                 return NotFound();
             }
 
-            return View(consultaEntity);
+            return View(anamneseEntity);
         }
 
-        // GET: ConsultaEntities/Create
+        // GET: AnamneseEntities/Create
         public IActionResult Create()
         {
+            ViewData["ParteDoCorpoId"] = new SelectList(_context.Set<ParteDoCorpoEntity>(), "Id", "Id");
             return View();
         }
 
-        // POST: ConsultaEntities/Create
+        // POST: AnamneseEntities/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DataConsulta,NomeProcedimeneto,HorarioConsulta")] ConsultaEntity consultaEntity)
+        public async Task<IActionResult> Create([Bind("Id,Sintomas,DoencasPreExistentes,ParteDoCorpoId")] AnamneseEntity anamneseEntity)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(consultaEntity);
+                _context.Add(anamneseEntity);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(consultaEntity);
+            ViewData["ParteDoCorpoId"] = new SelectList(_context.Set<ParteDoCorpoEntity>(), "Id", "Id", anamneseEntity.ParteDoCorpoId);
+            return View(anamneseEntity);
         }
 
-        // GET: ConsultaEntities/Edit/5
+        // GET: AnamneseEntities/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -90,22 +78,23 @@ namespace AgendamentoConsultas.Controllers
                 return NotFound();
             }
 
-            var consultaEntity = await _context.Consultas.FindAsync(id);
-            if (consultaEntity == null)
+            var anamneseEntity = await _context.Anamneses.FindAsync(id);
+            if (anamneseEntity == null)
             {
                 return NotFound();
             }
-            return View(consultaEntity);
+            ViewData["ParteDoCorpoId"] = new SelectList(_context.Set<ParteDoCorpoEntity>(), "Id", "Id", anamneseEntity.ParteDoCorpoId);
+            return View(anamneseEntity);
         }
 
-        // POST: ConsultaEntities/Edit/5
+        // POST: AnamneseEntities/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,DataConsulta,NomeProcedimeneto,HorarioConsulta")] ConsultaEntity consultaEntity)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Sintomas,DoencasPreExistentes,ParteDoCorpoId")] AnamneseEntity anamneseEntity)
         {
-            if (id != consultaEntity.Id)
+            if (id != anamneseEntity.Id)
             {
                 return NotFound();
             }
@@ -114,12 +103,12 @@ namespace AgendamentoConsultas.Controllers
             {
                 try
                 {
-                    _context.Update(consultaEntity);
+                    _context.Update(anamneseEntity);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ConsultaEntityExists(consultaEntity.Id))
+                    if (!AnamneseEntityExists(anamneseEntity.Id))
                     {
                         return NotFound();
                     }
@@ -130,10 +119,11 @@ namespace AgendamentoConsultas.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(consultaEntity);
+            ViewData["ParteDoCorpoId"] = new SelectList(_context.Set<ParteDoCorpoEntity>(), "Id", "Id", anamneseEntity.ParteDoCorpoId);
+            return View(anamneseEntity);
         }
 
-        // GET: ConsultaEntities/Delete/5
+        // GET: AnamneseEntities/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -141,30 +131,31 @@ namespace AgendamentoConsultas.Controllers
                 return NotFound();
             }
 
-            var consultaEntity = await _context.Consultas
+            var anamneseEntity = await _context.Anamneses
+                .Include(a => a.ParteDoCorpo)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (consultaEntity == null)
+            if (anamneseEntity == null)
             {
                 return NotFound();
             }
 
-            return View(consultaEntity);
+            return View(anamneseEntity);
         }
 
-        // POST: ConsultaEntities/Delete/5
+        // POST: AnamneseEntities/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var consultaEntity = await _context.Consultas.FindAsync(id);
-            _context.Consultas.Remove(consultaEntity);
+            var anamneseEntity = await _context.Anamneses.FindAsync(id);
+            _context.Anamneses.Remove(anamneseEntity);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ConsultaEntityExists(int id)
+        private bool AnamneseEntityExists(int id)
         {
-            return _context.Consultas.Any(e => e.Id == id);
+            return _context.Anamneses.Any(e => e.Id == id);
         }
     }
 }

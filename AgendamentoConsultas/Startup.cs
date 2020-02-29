@@ -16,7 +16,7 @@ namespace AgendamentoConsultas
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-
+            
             var db = new DataBase();
             // delete database
             db.Database.EnsureDeleted();

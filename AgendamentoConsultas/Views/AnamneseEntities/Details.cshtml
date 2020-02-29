@@ -1,4 +1,4 @@
-﻿@model AgendamentoConsultas.Models.Consultas.ConsultaEntity
+﻿@model AgendamentoConsultas.Models.Anamnese.AnamneseEntity
 
 @{
     ViewData["Title"] = "Details";
@@ -7,26 +7,26 @@
 <h1>Details</h1>
 
 <div>
-    <h4>ConsultaEntity</h4>
+    <h4>AnamneseEntity</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DataConsulta)
+            @Html.DisplayNameFor(model => model.Sintomas)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DataConsulta)
+            @Html.DisplayFor(model => model.Sintomas)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NomeProcedimeneto)
+            @Html.DisplayNameFor(model => model.DoencasPreExistentes)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NomeProcedimeneto)
+            @Html.DisplayFor(model => model.DoencasPreExistentes)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HorarioConsulta)
+            @Html.DisplayNameFor(model => model.ParteDoCorpo)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HorarioConsulta)
+            @Html.DisplayFor(model => model.ParteDoCorpo.Id)
         </dd>
     </dl>
 </div>

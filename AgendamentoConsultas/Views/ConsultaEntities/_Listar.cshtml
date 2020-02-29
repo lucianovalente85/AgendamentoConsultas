@@ -1,8 +1,8 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<AgendamentoConsultas.Models.Consultas.ConsultaEntity>
 
-@model IEnumerable<AgendamentoConsultas.Models.Consulta.ConsultaEntity>
+@{
+    ViewData["Title"] = "Listar";
+}
 
 <table class="table">
     <thead>
@@ -11,13 +11,10 @@
                 @Html.DisplayNameFor(model => model.DataConsulta)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NomeProcedimento)
+                @Html.DisplayNameFor(model => model.NomeProcedimeneto)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.HorarioConsulta)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Anamnese)
             </th>
             <th></th>
         </tr>
@@ -30,13 +27,10 @@
                     @Html.DisplayFor(modelItem => item.DataConsulta)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.NomeProcedimento)
+                    @Html.DisplayFor(modelItem => item.NomeProcedimeneto)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.HorarioConsulta)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Anamnese.Id)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
@@ -54,3 +48,4 @@
         <li><a href="#" onclick="paginar(1)">Próxima</a></li>
     </ul>
 </nav>
+

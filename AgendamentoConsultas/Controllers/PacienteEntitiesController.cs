@@ -1,8 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AgendamentoConsultas.Models.Paciente;
+using AgendamentoConsultas;
+using AgendamentoConsultas.Models.Pacientes;
 
 namespace AgendamentoConsultas.Controllers
 {
@@ -27,6 +31,9 @@ namespace AgendamentoConsultas.Controllers
             if (paciente.Codigo != 0)
                 query = query.Where(p => p.Codigo.Equals(paciente.Codigo));
 
+            if (!String.IsNullOrWhiteSpace(paciente.Nome))
+                query = query.Where(p => p.Nome.Equals(paciente.Nome));
+
             if (paciente.Cpf != 0)
                 query = query.Where(p => p.Cpf.Equals(paciente.Cpf));
 
@@ -35,7 +42,7 @@ namespace AgendamentoConsultas.Controllers
         }
 
         // GET: PacienteEntities/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -63,7 +70,7 @@ namespace AgendamentoConsultas.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Codigo,Cpf,DataNascimento,ConsultaId")] PacienteEntity pacienteEntity)
+        public async Task<IActionResult> Create([Bind("Id,Codigo,Nome,Cpf,Senha,DataNascimento,PlanoSaudeId")] PacienteEntity pacienteEntity)
         {
             if (ModelState.IsValid)
             {
@@ -75,7 +82,7 @@ namespace AgendamentoConsultas.Controllers
         }
 
         // GET: PacienteEntities/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -95,7 +102,7 @@ namespace AgendamentoConsultas.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,Codigo,Cpf,DataNascimento,ConsultaId")] PacienteEntity pacienteEntity)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Codigo,Nome,Cpf,Senha,DataNascimento,PlanoSaudeId")] PacienteEntity pacienteEntity)
         {
             if (id != pacienteEntity.Id)
             {
@@ -126,7 +133,7 @@ namespace AgendamentoConsultas.Controllers
         }
 
         // GET: PacienteEntities/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -146,7 +153,7 @@ namespace AgendamentoConsultas.Controllers
         // POST: PacienteEntities/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var pacienteEntity = await _context.Pacientes.FindAsync(id);
             _context.Pacientes.Remove(pacienteEntity);
@@ -154,7 +161,7 @@ namespace AgendamentoConsultas.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PacienteEntityExists(string id)
+        private bool PacienteEntityExists(int id)
         {
             return _context.Pacientes.Any(e => e.Id == id);
         }

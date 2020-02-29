@@ -1,23 +1,22 @@
 ﻿
 
-@{
-    ViewData["Title"] = "Index";
-}
 
-<h1>Index</h1>
 
 <p>
     <a href="@Url.Action("Create")" class="btn btn-success">
         <span class="glyphicon glyphicon-plus"></span>
         Novo Paciente
-    </a>
-    <a asp-action="Create">Create New</a>
+    </a> 
 </p>
 
 <form class="form-inline">
     <div class="form-group">
         <label class="sr-only">Codigo</label>
         <input type="text" class="form-control" name="Codigo" placeholder="Codigo">
+    </div>
+    <div class="form-group">
+        <label class="sr-only">Nome</label>
+        <input type="text" class="form-control" name="Nome" placeholder="Nome">
     </div>
     <div class="form-group">
         <label class="sr-only">CPF</label>
@@ -31,7 +30,7 @@
 
 <div id="listagemPaciente"></div>
 
-@section scripts{ 
+@section scripts{
     <script type="text/javascript">
         $(document).ready(configurarControles);
 
@@ -52,7 +51,7 @@
 
             listarPacientes(paginaAtual + valor);
 
-           
+
         }
 
         function listarPacientes()
@@ -61,6 +60,8 @@
         }
 
     </script>
-    
+
 }
+
+
 

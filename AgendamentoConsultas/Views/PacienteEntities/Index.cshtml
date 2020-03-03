@@ -1,12 +1,9 @@
 ﻿
-
-
-
 <p>
     <a href="@Url.Action("Create")" class="btn btn-success">
         <span class="glyphicon glyphicon-plus"></span>
         Novo Paciente
-    </a> 
+    </a>
 </p>
 
 <form class="form-inline">
@@ -31,37 +28,33 @@
 <div id="listagemPaciente"></div>
 
 @section scripts{
-    <script type="text/javascript">
-        $(document).ready(configurarControles);
+<script type="text/javascript">
+    $(document).ready(configurarControles);
 
-        function configurarControles() {
+    function configurarControles() {
 
-            $("#btnListar").click(listarPacientes);
+        $("#btnListar").click(listarPacientes);
 
-            listarPacientes();
-        }
+        listarPacientes();
+    }
 
-        function paginar(valor)
-        {
-            var elementoPagina = $("input[name='pagina']");
+    function paginar(valor) {
+        var elementoPagina = $("input[name='pagina']");
 
-            var paginaAtual = parseInt(elementoPagina.val());
+        var paginaAtual = parseInt(elementoPagina.val());
 
-            elementoPagina.val();
+        elementoPagina.val();
 
-            listarPacientes(paginaAtual + valor);
+        listarPacientes(paginaAtual + valor);
 
 
-        }
+    }
 
-        function listarPacientes()
-        {
-            $("#listagemPaciente").load("@Url.Action("Listar")", $("form").serialize());
-        }
+    function listarPacientes() {
+        $("#listagemPaciente").load("@Url.Action("Listar")", $("form").serialize());
+    }
 
-    </script>
+</script>
 
 }
-
-
 

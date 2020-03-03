@@ -42,11 +42,11 @@
             @Html.DisplayFor(model => model.DataNascimento)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PlanoSaudeId)
+            @Html.DisplayNameFor(model => model.PlanoDeSaude)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PlanoSaudeId)
-        </dd>
+            @Html.DisplayFor(model => model.PlanoDeSaude.Id)
+        </dd class>
     </dl>
     
     <form asp-action="Delete">

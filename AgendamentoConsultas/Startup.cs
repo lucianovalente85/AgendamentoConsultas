@@ -19,7 +19,7 @@ namespace AgendamentoConsultas
             
             var db = new DataBase();
             // delete database
-            db.Database.EnsureDeleted();
+            // db.Database.EnsureDeleted();
             // create database if not exist
             db.Database.EnsureCreated();
         }

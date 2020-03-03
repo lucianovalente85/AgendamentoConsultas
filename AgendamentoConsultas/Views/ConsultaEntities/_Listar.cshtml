@@ -1,51 +1,57 @@
 ﻿@model IEnumerable<AgendamentoConsultas.Models.Consultas.ConsultaEntity>
 
-@{
-    ViewData["Title"] = "Listar";
-}
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.DataConsulta)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NomeProcedimeneto)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HorarioConsulta)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DataConsulta)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NomeProcedimeneto)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.HorarioConsulta)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.DataConsulta)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NomeProcedimeneto)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HorarioConsulta)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Paciente)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Anamnese)
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
-
-<nav>
-    <ul class="pager">
-        <li><a href="#" onclick="paginar(-1)">Anterior</a></li>
-        <li><a href="#" onclick="paginar(1)">Próxima</a></li>
-    </ul>
-</nav>
-
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DataConsulta)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NomeProcedimeneto)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HorarioConsulta)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Paciente.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Anamnese.Sintomas)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <nav>
+        <ul class="pager">
+            <li><a href="#" onclick="paginar(-1)">Anterior</a></li>
+            <li><a href="#" onclick="paginar(1)">Próxima</a></li>
+        </ul>
+    </nav>

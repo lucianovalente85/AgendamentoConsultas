@@ -41,6 +41,8 @@ namespace AgendamentoConsultas.Controllers
             return PartialView("_Listar", await query.ToListAsync());
         }
 
+
+
         // GET: PacienteEntities/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -50,6 +52,7 @@ namespace AgendamentoConsultas.Controllers
             }
 
             var pacienteEntity = await _context.Pacientes
+                .Include(p => p.PlanoDeSaude)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (pacienteEntity == null)
             {
@@ -62,6 +65,7 @@ namespace AgendamentoConsultas.Controllers
         // GET: PacienteEntities/Create
         public IActionResult Create()
         {
+            ViewData["PlanoDeSaudeId"] = new SelectList(_context.PlanoSaudes, "Id", "Nome");
             return View();
         }
 
@@ -70,7 +74,7 @@ namespace AgendamentoConsultas.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Codigo,Nome,Cpf,Senha,DataNascimento,PlanoSaudeId")] PacienteEntity pacienteEntity)
+        public async Task<IActionResult> Create([Bind("Id,Codigo,Nome,Cpf,Senha,DataNascimento,PlanoDeSaudeId")] PacienteEntity pacienteEntity)
         {
             if (ModelState.IsValid)
             {
@@ -78,6 +82,7 @@ namespace AgendamentoConsultas.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["PlanoDeSaudeId"] = new SelectList(_context.PlanoSaudes, "Id", "Nome", pacienteEntity.PlanoDeSaudeId);
             return View(pacienteEntity);
         }
 
@@ -94,6 +99,7 @@ namespace AgendamentoConsultas.Controllers
             {
                 return NotFound();
             }
+            ViewData["PlanoDeSaudeId"] = new SelectList(_context.PlanoSaudes, "Id", "Nome", pacienteEntity.PlanoDeSaudeId);
             return View(pacienteEntity);
         }
 
@@ -102,7 +108,7 @@ namespace AgendamentoConsultas.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Codigo,Nome,Cpf,Senha,DataNascimento,PlanoSaudeId")] PacienteEntity pacienteEntity)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Codigo,Nome,Cpf,Senha,DataNascimento,PlanoDeSaudeId")] PacienteEntity pacienteEntity)
         {
             if (id != pacienteEntity.Id)
             {
@@ -129,6 +135,7 @@ namespace AgendamentoConsultas.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["PlanoDeSaudeId"] = new SelectList(_context.PlanoSaudes, "Id", "Nome", pacienteEntity.PlanoDeSaudeId);
             return View(pacienteEntity);
         }
 
@@ -141,6 +148,7 @@ namespace AgendamentoConsultas.Controllers
             }
 
             var pacienteEntity = await _context.Pacientes
+                .Include(p => p.PlanoDeSaude)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (pacienteEntity == null)
             {

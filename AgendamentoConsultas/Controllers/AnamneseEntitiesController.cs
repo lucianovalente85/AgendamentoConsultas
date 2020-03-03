@@ -49,7 +49,7 @@ namespace AgendamentoConsultas.Controllers
         // GET: AnamneseEntities/Create
         public IActionResult Create()
         {
-            ViewData["ParteDoCorpoId"] = new SelectList(_context.Set<ParteDoCorpoEntity>(), "Id", "Id");
+            ViewData["ParteDoCorpoId"] = new SelectList(_context.Set<ParteDoCorpoEntity>(), "Id", "Nome");
             return View();
         }
 

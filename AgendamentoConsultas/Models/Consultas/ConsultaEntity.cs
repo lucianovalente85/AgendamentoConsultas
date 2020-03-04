@@ -13,10 +13,13 @@ namespace AgendamentoConsultas.Models.Consultas
         public int Id { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        [Required(ErrorMessage = "Favor informar uma data.")]
         public DateTime DataConsulta { get; set; }
+        [Required(ErrorMessage = "Favor informar um procedimento.")]
         public string NomeProcedimeneto { get; set; }
         [DataType(DataType.Time)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:HH:mm}")]
+        [Required(ErrorMessage = "Favor informar um Horário da consulta.")]
         public DateTime HorarioConsulta { get; set; }
         public int PacienteId { get; set; }
         public virtual PacienteEntity Paciente { get; set; }

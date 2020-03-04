@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AgendamentoConsultas;
 using AgendamentoConsultas.Models.Pacientes;
+using AgendamentoConsultas.Util;
 
 namespace AgendamentoConsultas.Controllers
 {
@@ -22,23 +23,31 @@ namespace AgendamentoConsultas.Controllers
         // GET: PacienteEntities
         public IActionResult Index()
         {
+            //
             return View();
         }
-
+        //Lista os de um paciente
         public async Task<PartialViewResult> Listar(PacienteEntity paciente, int pagina = 1, int registros = 5)
         {
             var query = _context.Pacientes.AsQueryable();
-            if (paciente.Codigo != 0)
+            //Busca um paciente cadastrado com Código que será cadastrado 
+            if (paciente.Codigo != 0)   
                 query = query.Where(p => p.Codigo.Equals(paciente.Codigo));
-
+            //Busca um paciente cadastrado com Nome que será cadastrado
             if (!String.IsNullOrWhiteSpace(paciente.Nome))
                 query = query.Where(p => p.Nome.Equals(paciente.Nome));
-
-            if (paciente.Cpf != 0)
+            //Busca um paciente cadastrado com Cpf que será cadastrado
+            if (!String.IsNullOrWhiteSpace(paciente.Cpf))
                 query = query.Where(p => p.Cpf.Equals(paciente.Cpf));
-
+            //Ordena a lista de pacientes por x registros pré estabecidos no método Listar
             query = query.OrderBy(c => c.Id).Skip((pagina - 1) * registros).Take(registros);
-            return PartialView("_Listar", await query.ToListAsync());
+
+            var pacientes = await query.ToListAsync();
+            pacientes.ForEach( p => {
+                p.PlanoDeSaude = _context.PlanoSaudes.Where(e => e.Id == p.PlanoDeSaudeId).FirstOrDefault();
+            });
+
+            return PartialView("_Listar", pacientes);
         }
 
 
@@ -66,6 +75,7 @@ namespace AgendamentoConsultas.Controllers
         public IActionResult Create()
         {
             ViewData["PlanoDeSaudeId"] = new SelectList(_context.PlanoSaudes, "Id", "Nome");
+            ViewBag.PlanoDeSaude = new List<PlanoSaudeEntity>();
             return View();
         }
 
@@ -76,11 +86,31 @@ namespace AgendamentoConsultas.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Codigo,Nome,Cpf,Senha,DataNascimento,PlanoDeSaudeId")] PacienteEntity pacienteEntity)
         {
-            if (ModelState.IsValid)
+            ViewData["errorMessage"] = "";
+            if (ModelState.IsValid )
             {
-                _context.Add(pacienteEntity);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //Validando o cadastro de pessoas maiores de idade.
+                int idade = DateTime.Now.Year - pacienteEntity.DataNascimento.Year;
+                if (idade >= 18)
+                {
+                    //Utilizando o método para validar o CPF
+                    if (ValidaCPF.IsCpf(pacienteEntity.Cpf))
+                    {
+                        _context.Add(pacienteEntity);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        ViewData["errorMessage"] = "O CPF está inválido.";
+                    }
+
+                }
+                else
+                {
+                    ViewData["errorMessage"] = "Não é permitido cadastrar menor de idade.";
+                }
+
             }
             ViewData["PlanoDeSaudeId"] = new SelectList(_context.PlanoSaudes, "Id", "Nome", pacienteEntity.PlanoDeSaudeId);
             return View(pacienteEntity);

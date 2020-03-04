@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using AgendamentoConsultas;
 using AgendamentoConsultas.Models.Consultas;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace AgendamentoConsultas.Controllers
 {
@@ -18,12 +19,12 @@ namespace AgendamentoConsultas.Controllers
 
         public class FormPesquisa
         {
-            [DataType(DataType.Date)]
-            [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
-            public DateTime DataConsultaInicio { get; set; }
-            [DataType(DataType.Date)]
-            [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
-            public DateTime DataConsultaFinal { get; set; }
+            //[DataType(DataType.Date)]
+            //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
+            public string DataConsultaInicio { get; set; }
+            //[DataType(DataType.Date)]
+           // [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
+            public string DataConsultaFinal { get; set; }
             public int PlanoDeSaudeId { get; set; }
         }
 
@@ -42,18 +43,40 @@ namespace AgendamentoConsultas.Controllers
         //Criação da lista para filtrar as consultas.
         public async Task<PartialViewResult> Listar(FormPesquisa formPesquisa, int pagina = 1, int registros = 5)
         {
+            CultureInfo ptBR = new CultureInfo("pt-BR");
             var query = _context.Consultas.AsQueryable();
-
-            var dataHoje = formPesquisa.DataConsultaInicio;
-            var dataAmanha = formPesquisa.DataConsultaFinal;
-
-
-            query = query.Where(e => e.DataConsulta >= dataHoje && e.DataConsulta < dataAmanha);
-
-
+            
+                //Busca um agendamento cadastrado com Data que será cadastrada e tambem faz o filtro por data inicial
+                if (formPesquisa.DataConsultaInicio != null)
+                {
+                    DateTime dataHoje = DateTime.ParseExact(formPesquisa.DataConsultaInicio, "yyyy-MM-dd", ptBR);
+                    query = query.Where(e => e.DataConsulta >= dataHoje);
+                }
+                //Busca um agendamento cadastrado com Data Final que será cadastrada
+                if (formPesquisa.DataConsultaFinal != null)
+                {
+                    DateTime dataAmanha = DateTime.ParseExact(formPesquisa.DataConsultaFinal, "yyyy-MM-dd", ptBR);
+                    query = query.Where(e => e.DataConsulta < dataAmanha);
+                }
+                //Busca um agendamento cadastrado pelo Plano de Saude que será cadastrado
+                if (formPesquisa.PlanoDeSaudeId != null)
+                {
+                    query = query.Where(e => e.Paciente.PlanoDeSaudeId == formPesquisa.PlanoDeSaudeId);
+                }
             query = query.OrderBy(c => c.DataConsulta).Skip((pagina - 1) * registros).Take(registros);
+            //Traz os objetos Paciente e Anaminese para a view da consulta
+            var pacienteAnaminese = query.ToList();
+            pacienteAnaminese.ForEach(p => {
+                p.Anamnese = _context.Anamneses.Where(e => e.Id == p.AnamneseId).FirstOrDefault();
+                p.Paciente = _context.Pacientes.Where(e => e.Id == p.PacienteId).FirstOrDefault();
+            });
 
-            return PartialView("_Listar", await query.ToListAsync());
+            return PartialView("_Listar", pacienteAnaminese);
+            
+            
+            
+
+           
         }
 
         // GET: ConsultaEntities/Details/5

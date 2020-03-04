@@ -66,7 +66,7 @@ namespace AgendamentoConsultas.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ParteDoCorpoId"] = new SelectList(_context.Set<ParteDoCorpoEntity>(), "Id", "Id", anamneseEntity.ParteDoCorpoId);
+            ViewData["ParteDoCorpoId"] = new SelectList(_context.Set<ParteDoCorpoEntity>(), "Id", "Nome", anamneseEntity.ParteDoCorpoId);
             return View(anamneseEntity);
         }
 
@@ -83,7 +83,7 @@ namespace AgendamentoConsultas.Controllers
             {
                 return NotFound();
             }
-            ViewData["ParteDoCorpoId"] = new SelectList(_context.Set<ParteDoCorpoEntity>(), "Id", "Id", anamneseEntity.ParteDoCorpoId);
+            ViewData["ParteDoCorpoId"] = new SelectList(_context.Set<ParteDoCorpoEntity>(), "Id", "Nome", anamneseEntity.ParteDoCorpoId);
             return View(anamneseEntity);
         }
 
@@ -119,7 +119,7 @@ namespace AgendamentoConsultas.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ParteDoCorpoId"] = new SelectList(_context.Set<ParteDoCorpoEntity>(), "Id", "Id", anamneseEntity.ParteDoCorpoId);
+            ViewData["ParteDoCorpoId"] = new SelectList(_context.Set<ParteDoCorpoEntity>(), "Id", "Nome", anamneseEntity.ParteDoCorpoId);
             return View(anamneseEntity);
         }
 

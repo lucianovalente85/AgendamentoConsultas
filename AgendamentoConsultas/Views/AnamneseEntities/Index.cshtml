@@ -2,9 +2,13 @@
 
 
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+    <p>
+        <a href="@Url.Action("Create")" class="btn btn-success">
+            <span class="glyphicon gliphicon-plus"></span>
+            Novo Anaminese
+        </a>
+
+    </p>
 <table class="table">
     <thead>
         <tr>
@@ -30,7 +34,7 @@
                 @Html.DisplayFor(modelItem => item.DoencasPreExistentes)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ParteDoCorpo.Id)
+                @Html.DisplayFor(modelItem => item.ParteDoCorpo.Nome)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
@@ -41,3 +45,9 @@
 }
     </tbody>
 </table>
+<nav>
+    <ul class="pager">
+        <li><a href="#" onclick="paginar(-1)">Anterior</a></li>
+        <li><a href="#" onclick="paginar(1)">Próxima</a></li>
+    </ul>
+</nav>
